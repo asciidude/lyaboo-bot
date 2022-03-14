@@ -45,7 +45,7 @@ export default {
             .setTitle(interaction.options.getString('title'))
             .setDescription(interaction.options.getString('text'))
             .setColor('#000001')
-            .setImage(interaction.options.getString('imageURL') || process.env.BANNER_URL)
+            .setImage(interaction.options.getString('image') || process.env.BANNER_URL)
             .setFooter({ text: interaction.member.user.username, iconURL: interaction.member.user.avatarURL() })
             .setTimestamp();
 
