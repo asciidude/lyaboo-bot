@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 export default {
     data: new SlashCommandBuilder()
         .setName('echo')
-        .setDescription('Echo your message')
+        .setDescription('👂 Echo your message')
         .addStringOption((opt) =>
             opt
                 .setName('text')

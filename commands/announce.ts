@@ -4,17 +4,17 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 export default {
     data: new SlashCommandBuilder()
         .setName('announce')
-        .setDescription('Create an announcement')
-        .addStringOption((opt) =>
-            opt
-                .setName('text')
-                .setDescription('The text to be sent')
-                .setRequired(true)
-            )
+        .setDescription('📢 Create an announcement')
         .addStringOption((opt) =>
             opt
                 .setName('title')
                 .setDescription('The title of the announcement')
+                .setRequired(true)
+            )
+        .addStringOption((opt) =>
+            opt
+                .setName('text')
+                .setDescription('The text to be sent')
                 .setRequired(true)
             )
         .addChannelOption((opt) =>
@@ -39,7 +39,7 @@ export default {
             .setTitle(interaction.options.getString('title'))
             .setDescription(interaction.options.getString('text'))
             .setColor('#000001')
-            .setThumbnail(process.env.BANNER_URL!)
+            .setImage(process.env.BANNER_URL!)
             .setFooter({ text: interaction.member.user.username, iconURL: interaction.member.user.avatarURL() })
             .setTimestamp();
 
