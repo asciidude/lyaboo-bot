@@ -31,10 +31,10 @@ export default {
             )
         .addStringOption((opt) =>
             opt
-                .setName('imageURL')
-                .setDescription('Add an image to the announcement, defaults to the Seclusion banner')
+                .setName('image')
+                .setDescription('Add an image to the announcement - must be a valid URL')
                 .setRequired(false)
-        ),
+            ),
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({
             content: '⛔ You do not have permission to use this command',
