@@ -28,7 +28,13 @@ export default {
                 .setName('ping')
                 .setDescription('Ping @everyone?')
                 .setRequired(true)
-            ),
+            )
+        .addStringOption((opt) =>
+            opt
+                .setName('imageURL')
+                .setDescription('Add an image to the announcement, defaults to the Seclusion banner')
+                .setRequired(false)
+        ),
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({
             content: '⛔ You do not have permission to use this command',
@@ -39,7 +45,7 @@ export default {
             .setTitle(interaction.options.getString('title'))
             .setDescription(interaction.options.getString('text'))
             .setColor('#000001')
-            .setImage(process.env.BANNER_URL!)
+            .setImage(interaction.options.getString('imageURL') || process.env.BANNER_URL)
             .setFooter({ text: interaction.member.user.username, iconURL: interaction.member.user.avatarURL() })
             .setTimestamp();
 
