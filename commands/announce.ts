@@ -27,7 +27,7 @@ export default {
             opt
                 .setName('ping')
                 .setDescription('Ping @everyone?')
-                .setRequired(true)
+                .setRequired(false)
             )
         .addStringOption((opt) =>
             opt
