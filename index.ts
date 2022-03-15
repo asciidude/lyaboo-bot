@@ -81,4 +81,12 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
+client.on('messageCreate', async (message) => {
+    if(message.author.bot) return;
+
+    if(message.channel.id === '887805090222723114') {
+        await message.delete();
+    }
+});
+
 client.login(process.env.TOKEN);
