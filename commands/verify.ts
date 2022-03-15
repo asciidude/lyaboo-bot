@@ -53,7 +53,10 @@ export default {
         const filter = async (message) => {
             if(message.author.id !== interaction.member.user.id) return false;
             if(message.content == captcha.text) {
-                await message.delete();
+                if(interaction.channel.id !== '887805090222723114') {
+                    await message.delete();
+                }
+
                 return true;
             }
 
