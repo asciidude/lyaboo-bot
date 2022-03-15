@@ -57,7 +57,7 @@ export default {
                 return true;
             }
 
-            if(message.channel.id !== '887805090222723114') {
+            if(interaction.channel.id !== '887805090222723114') {
                 await message.delete();
             }
 
