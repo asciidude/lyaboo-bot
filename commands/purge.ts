@@ -10,7 +10,6 @@ export default {
                     .setDescription('The amount of messages to delete')
                     .setRequired(true)
                 ),
-
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({
             content: '⛔ You do not have permission to use this command',
