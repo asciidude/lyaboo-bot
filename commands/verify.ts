@@ -57,7 +57,9 @@ export default {
                 return true;
             }
 
-            await message.delete();
+            if(message.channel.id !== '887805090222723114') {
+                await message.delete();
+            }
 
             await interaction.followUp({
                 content: '⛔ The captcha you provided was incorrect, please try again',
