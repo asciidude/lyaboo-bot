@@ -9,6 +9,7 @@ import fs from 'fs';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import Discord, { Intents, Collection, TextChannel, GuildMember } from 'discord.js';
+import replaceOptions from './utils/replaceOptions';
 import Server from './models/Server';
 
 declare module "discord.js" {
@@ -37,7 +38,7 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log(`${client.user!.username} is now ready!`);
     client.user!.setActivity('for slash commands 👀', { type: 'WATCHING' });
 
@@ -90,21 +91,12 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-const replaceMessage_user = async (message, member: GuildMember) => {
-    return message
-        .replaceAll('{USER.MENTION}', member)
-        .replaceAll('{USER.NAME}', member.user.username)
-        .replaceAll('{USER.DISCRIMINATOR}', member.user.discriminator)
-        .replaceAll('{USER.ID}', member.user.id)
-        .replaceAll('{USER.AVATAR}', member.user.avatarURL());
-}
-
 client.on('guildMemberAdd', async (member) => {
     const guild = client.guilds.cache.get('887804416781082624');
     const channel = guild!.channels.cache.get('887806399399198770');
     const guildDB = await Server.findOne({ server_id: guild!.id });
 
-    (channel as TextChannel).send(await replaceMessage_user(guildDB.welcome_message, member));
+    (channel as TextChannel).send(await replaceOptions(guildDB.welcome_message, member));
 });
 
 client.login(process.env.TOKEN);

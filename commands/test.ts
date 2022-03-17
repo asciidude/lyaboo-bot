@@ -20,7 +20,7 @@ export default {
         .addSubcommand(sub =>
             sub
                 .setName('welcome')
-                .setDescription('Test the welcome message of the server')
+                .setDescription('🔨 Test the welcome message of the server')
         ),
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_SERVER')) return interaction.reply({
