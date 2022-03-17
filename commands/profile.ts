@@ -46,7 +46,7 @@ export default {
                 `**Created:** ${user.createdAt.toLocaleString()}`
             )
             .setColor('#000001')
-            .setThumbnail(user.avatar || process.env.NOPFP_URL)
+            .setThumbnail(user.avatar.length > 0 ? user.avatar : process.env.NOPFP_URL)
             .setFooter({ text: `Requested by ${interaction.member.user.username}`, iconURL: interaction.member.user.avatarURL() })
             .setTimestamp();
 
