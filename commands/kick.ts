@@ -28,6 +28,11 @@ export default {
             ephemeral: true
         });
 
+        if(member == interaction.member) return interaction.reply({
+            content: '⛔ You can\'t kick yourself :rolling_eyes:',
+            ephemeral: true
+        });
+
         if(!member.kickable) return interaction.reply({
             content: '⛔ You cannot kick this user',
             ephemeral: true

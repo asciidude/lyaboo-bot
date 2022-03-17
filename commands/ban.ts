@@ -28,6 +28,11 @@ export default {
             ephemeral: true
         });
 
+        if(member == interaction.member) return interaction.reply({
+            content: '⛔ You can\'t ban yourself :rolling_eyes:',
+            ephemeral: true
+        });
+
         if(!member.bannable) return interaction.reply({
             content: '⛔ You cannot ban this user',
             ephemeral: true

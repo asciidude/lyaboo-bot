@@ -12,6 +12,12 @@ export default {
                 .setName('token')
                 .setDescription('If you\'d like to verify your Seclusion account instead, provide a token')
                 .setRequired(false)
+        )
+        .addBooleanOption((opt) =>
+            opt
+                .setName('unverify')
+                .setDescription('Unverify your Seclusion account (ONLY WORKS ON SECLUSION ACCOUNTS)')
+                .setRequired(false)
         ),
     execute: async (interaction) => {
         if(interaction.options.getString('token')) {
@@ -24,9 +30,16 @@ export default {
                 });
             }
 
-            if(user.verified) {
+            if(user.verified && !interaction.options.getBoolean('unverify')) {
                 return interaction.reply({
                     content: '⛔ Your Seclusion account has already been verified',
+                    ephemeral: true
+                });
+            }
+
+            if(!user.verified && interaction.options.getBoolean('unverify')) {
+                return interaction.reply({
+                    content: '⛔ Your Seclusion account is already not verified',
                     ephemeral: true
                 });
             }
@@ -46,7 +59,7 @@ export default {
         const captchaAttachment = new MessageAttachment(await captcha.png, `captcha_${Date.now()}.png`);
         interaction.reply({
             files: [captchaAttachment],
-            content: '👮 Input the code below to verify yourself',
+            content: !interaction.options.getBoolean('unverify') ? '👮 Input the code below to verify yourself' : '👮 Input the code below to unverify yourself',
             ephemeral: true
         });
 
@@ -78,14 +91,14 @@ export default {
             if(res) {
                 if(interaction.options.getString('token')) {
                     // Verify Seclusion account
-                    await User.findOneAndUpdate({ token: interaction.options.getString('token') },
-                        {
-                            verified: true
-                        }
-                    );
+                    if(interaction.options.getBoolean('unverify')) {
+                        await User.updateOne({ token: interaction.options.getString('token') }, { verified: false });
+                    } else {
+                        await User.updateOne({ token: interaction.options.getString('token') }, { verified: true });
+                    }
 
                     return interaction.followUp({
-                        content: '🔒 Your Seclusion account has been verified',
+                        content: !interaction.options.getBoolean('unverify') ?  '🔒 Your Seclusion account has been verified' : '🔒 Your Seclusion account has been unverified',
                         ephemeral: true
                     });
                 } else {
