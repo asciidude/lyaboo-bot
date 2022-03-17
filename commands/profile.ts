@@ -30,8 +30,6 @@ export default {
             ephemeral: true
         });
 
-        console.log(user.avatar.length > 0 ? user.avatar : process.env.NOPFP_URL);
-
         const embed = new MessageEmbed()
             .setTitle(`${interaction.options.getString('username')}'s profile`)
             .setDescription(
