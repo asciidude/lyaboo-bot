@@ -8,7 +8,8 @@ mongoose.connect(process.env.MONGO_URI!)
 import fs from 'fs';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import Discord, { Intents, Collection } from 'discord.js';
+import Discord, { Intents, Collection, TextChannel, GuildMember } from 'discord.js';
+import Server from './models/Server';
 
 declare module "discord.js" {
     export interface Client {
@@ -87,6 +88,23 @@ client.on('messageCreate', async (message) => {
     if(message.channel.id === '887805090222723114') {
         await message.delete();
     }
+});
+
+const replaceMessage_user = async (message, member: GuildMember) => {
+    return message
+        .replaceAll('{USER.MENTION}', member)
+        .replaceAll('{USER.NAME}', member.user.username)
+        .replaceAll('{USER.DISCRIMINATOR}', member.user.discriminator)
+        .replaceAll('{USER.ID}', member.user.id)
+        .replaceAll('{USER.AVATAR}', member.user.avatarURL());
+}
+
+client.on('guildMemberAdd', async (member) => {
+    const guild = client.guilds.cache.get('887804416781082624');
+    const channel = guild!.channels.cache.get('887806399399198770');
+    const guildDB = await Server.findOne({ server_id: guild!.id });
+
+    (channel as TextChannel).send(await replaceMessage_user(guildDB.welcome_message, member));
 });
 
 client.login(process.env.TOKEN);

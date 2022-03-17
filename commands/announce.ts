@@ -37,7 +37,7 @@ export default {
             ),
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({
-            content: '⛔ You do not have permission to use this command',
+            content: '⛔ You do not have permission to use this command (`MANAGE_MESSAGES`)',
             ephemeral: true
         });
 
