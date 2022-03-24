@@ -1,7 +1,7 @@
 import { Captcha } from 'captcha-canvas';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageAttachment } from 'discord.js';
-import User from '../models/User';
+import User from '../../models/User';
 
 export default {
     data: new SlashCommandBuilder()

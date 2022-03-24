@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
-import Server from '../models/Server';
+import Server from '../../models/Server';
 
 export default {
     data: new SlashCommandBuilder()

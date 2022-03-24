@@ -11,6 +11,7 @@ import { Routes } from 'discord-api-types/v9';
 import Discord, { Intents, Collection, TextChannel, GuildMember } from 'discord.js';
 import replaceOptions from './utils/replaceOptions';
 import Server from './models/Server';
+import path from 'path';
 
 declare module "discord.js" {
     export interface Client {
@@ -21,17 +22,32 @@ declare module "discord.js" {
 const client = new Discord.Client({
     intents: [
         Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_VOICE_STATES
     ]
 });
 
 // Initialize command handler
-const commandFiles: String[] = fs.readdirSync('./commands').filter(f => f.endsWith('.ts'));
+const recursive = function(dir: string, arr: any) {
+    const files = fs.readdirSync(dir);
+  
+    for(const file of files) {
+        if (fs.statSync(dir + "/" + file).isDirectory()) {
+            arr = recursive(dir + "/" + file, arr);
+        } else {
+            arr.push(path.join(__dirname, dir, "/", file));
+        }
+    }
+  
+    return arr;
+}
+
+const commandFiles: String[] = recursive('./commands', []).filter(f => f.endsWith('.ts'));
 const commands: Object[] = [];
 client.commands = new Collection();
 
 for (const file of commandFiles) {
-    let command = require(`./commands/${file}`);
+    let command = require(file as string);
     if (command.default) command = command.default;
 
     commands.push(command.data.toJSON());

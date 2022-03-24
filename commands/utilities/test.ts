@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { GuildMember } from 'discord.js';
-import Server from '../models/Server';
+import Server from '../../models/Server';
 
 const replaceMessage_user = async (message, member: GuildMember) => {
     return message

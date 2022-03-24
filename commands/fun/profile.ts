@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import User from '../models/User';
+import User from '../../models/User';
 
 const unescapeHtml = (safe) => {
     return safe
