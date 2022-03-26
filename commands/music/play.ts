@@ -26,6 +26,14 @@ export default {
         }
 
         const search = await youtubeSearch(interaction.options.getString('search'), { maxResults: 1, key: process.env.YT_API_KEY });
+    
+        if(!search || search.results.length === 0) {
+            return interaction.reply({
+                content: '⛔ No results found. I wonder how you even got to this point... -asciidude',
+                ephemeral: true
+            });
+        }
+
         if(search.results[0].kind != 'youtube#video') {
             return interaction.reply({
                 content: '⛔ No results found!',
@@ -83,16 +91,6 @@ export default {
 
                 interaction.reply({
                     embeds: [embed]
-                });
-            });
-
-            music.on('end', () => {
-                player.stop();
-                connection.disconnect();
-
-                interaction.followUp({
-                    content: `🎵 The current track has ended (\`${search.results[0].title}\`)`,
-                    ephemeral: false
                 });
             });
         } catch(err) {
