@@ -87,14 +87,6 @@ client.on('interactionCreate', async (interaction) => {
     });
 
     try {
-        const guildDB = await Server.findOne({ server_id: interaction.guild!.id });
-        const channel = interaction.guild!.channels.cache.get(guildDB.errors_channel) as TextChannel;
-
-        if(guildDB.errors_enabled) {
-            channel.send(`⛔ Error in command \`${interaction.commandName}\` (sent by ${interaction.member})`);
-        }
-        
-        //return;
         await command.execute(interaction);
     } catch(err) {
         if(err) console.log(err);
