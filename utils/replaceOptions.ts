@@ -1,6 +1,6 @@
 import { GuildMember } from "discord.js";
 
-export default async (message, member: GuildMember) => {
+export default async (message, member) => {
     return message
         .replaceAll('{USER.MENTION}', member)
         .replaceAll('{USER.NAME}', member.user.username)
