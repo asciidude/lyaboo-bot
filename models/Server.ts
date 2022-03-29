@@ -9,7 +9,11 @@ const serverConfigSchema = new Schema({
 
     // Logs
     logs_channel: String,
-    logs_enabled: Boolean
+    logs_enabled: Boolean,
+
+    // Error Logging
+    errors_channel: String,
+    errors_enabled: Boolean
 });
 
 export default model('Server', serverConfigSchema);

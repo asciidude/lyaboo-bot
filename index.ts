@@ -87,15 +87,27 @@ client.on('interactionCreate', async (interaction) => {
     });
 
     try {
+        const guildDB = await Server.findOne({ server_id: interaction.guild!.id });
+        const channel = interaction.guild!.channels.cache.get(guildDB.errors_channel) as TextChannel;
+
+        if(guildDB.errors_enabled) {
+            channel.send(`⛔ Error in command \`${interaction.commandName}\` (sent by ${interaction.member})`);
+        }
+        
+        //return;
         await command.execute(interaction);
     } catch(err) {
         if(err) console.log(err);
         else console.log(`Failed to execute slash command (${interaction.commandName}), no error provided`);
 
-        interaction.reply({
-            content: '⛔ An error occured',
-            ephemeral: true
-        });
+        const channel = interaction.guild!.channels.cache.get('887806399399198770') as TextChannel;
+        const guildDB = await Server.findOne({ server_id: interaction.guild!.id });
+
+        if(guildDB.errors_enabled) {
+            channel.send(`⛔ Error in command ${interaction.commandName}`);
+        }
+
+        interaction.channel!.send('⛔ An error occured');
     }
 });
 
@@ -109,10 +121,12 @@ client.on('messageCreate', async (message) => {
 
 client.on('guildMemberAdd', async (member) => {
     const guild = client.guilds.cache.get('887804416781082624');
-    const channel = guild!.channels.cache.get('887806399399198770');
+    const channel = guild!.channels.cache.get('887806399399198770') as TextChannel;
     const guildDB = await Server.findOne({ server_id: guild!.id });
 
-    (channel as TextChannel).send(await replaceOptions(guildDB.welcome_message, member));
+    if(guildDB.welcome_enabled) {
+        channel.send(await replaceOptions(guildDB.welcome_message, member));
+    }
 });
 
 client.login(process.env.TOKEN);

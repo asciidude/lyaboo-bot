@@ -51,6 +51,25 @@ export default {
                         .setDescription('Determines if the logs are enabled')
                         .setRequired(true)
                 )
+        )
+
+        // Error Logging
+        .addSubcommand(sub =>
+            sub
+                .setName('errors')
+                .setDescription('🔨 Set the error logging channel of the server')
+                .addChannelOption(opt =>
+                    opt
+                        .setName('channel')
+                        .setDescription('The error logging channel')
+                        .setRequired(true)
+                )
+                .addBooleanOption(opt =>
+                    opt
+                        .setName('enabled')
+                        .setDescription('Determines if the error logging is enabled')
+                        .setRequired(true)
+                )
         ),
     execute: async (interaction) => {
         if(!interaction.member.permissions.has('MANAGE_SERVER')) return interaction.reply({
@@ -75,7 +94,7 @@ export default {
         }
 
         if(interaction.options.getSubcommand() === 'welcome') {
-            await Server.findOneAndUpdate({ server_id: interaction.guild.id }, { 
+            await Server.updateOne({ server_id: interaction.guild.id }, { 
                 welcome_message: interaction.options.getString('message'),
                 welcome_enabled: interaction.options.getBoolean('enabled')
             });
@@ -87,13 +106,25 @@ export default {
         }
 
         if(interaction.options.getSubcommand() === 'logs') {
-            await Server.findOneAndUpdate({ server_id: interaction.guild.id }, { 
+            await Server.updateOne({ server_id: interaction.guild.id }, { 
                 logs_channel: interaction.options.getChannel('channel').id,
                 logs_enabled: interaction.options.getBoolean('enabled')
             });
 
             return interaction.reply({
                 content: `🪵 Logs channel set to ${interaction.options.getChannel('channel')} (${interaction.options.getChannel('channel').id})`,
+                ephemeral: true
+            });
+        }
+
+        if(interaction.options.getSubcommand() === 'errors') {
+            await Server.updateOne({ server_id: interaction.guild.id }, { 
+                errors_channel: interaction.options.getChannel('channel').id,
+                errors_enabled: interaction.options.getBoolean('enabled')
+            });
+
+            return interaction.reply({
+                content: `⛔ Error logging channel set to ${interaction.options.getChannel('channel')} (${interaction.options.getChannel('channel').id})`,
                 ephemeral: true
             });
         }
