@@ -6,6 +6,7 @@ const serverConfigSchema = new Schema({
     // Welcome
     welcome_message: String,
     welcome_enabled: Boolean,
+    welcome_channel: String,
 
     // Logs
     logs_channel: String,

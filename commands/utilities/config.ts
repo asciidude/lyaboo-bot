@@ -32,6 +32,12 @@ export default {
                         .setDescription('Determines if the welcome message is enabled')
                         .setRequired(true)
                 )
+                .addChannelOption(opt =>
+                    opt
+                        .setName('channel')
+                        .setDescription('The channel to send the welcome message to')
+                        .setRequired(true)
+                )
         )
         
         // Logs
@@ -96,7 +102,8 @@ export default {
         if(interaction.options.getSubcommand() === 'welcome') {
             await Server.updateOne({ server_id: interaction.guild.id }, { 
                 welcome_message: interaction.options.getString('message'),
-                welcome_enabled: interaction.options.getBoolean('enabled')
+                welcome_enabled: interaction.options.getBoolean('enabled'),
+                welcome_channel: interaction.options.getChannel('channel').id
             });
 
             return interaction.reply({

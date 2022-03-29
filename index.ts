@@ -113,8 +113,8 @@ client.on('messageCreate', async (message) => {
 
 client.on('guildMemberAdd', async (member) => {
     const guild = client.guilds.cache.get('887804416781082624');
-    const channel = guild!.channels.cache.get('887806399399198770') as TextChannel;
     const guildDB = await Server.findOne({ server_id: guild!.id });
+    const channel = guild!.channels.cache.get(guildDB.welcome_channel) as TextChannel;
 
     if(guildDB.welcome_enabled) {
         channel.send(await replaceOptions(guildDB.welcome_message, member));
