@@ -28,7 +28,7 @@ export default {
             ephemeral: true
         });
 
-        if(!server.logs_channel || !server.logs_channel.enabled) {
+        if(!server.logs_enabled) {
             return interaction.reply({
                 content: '⛔ This server has no logs channel set or it is not enabled, contact an administrator or set it yourself',
                 ephemeral: true
@@ -40,10 +40,14 @@ export default {
             ephemeral: true
         });
 
-        interaction.guild.channels.cache.get(server.logs_channel).send(`${user} was warned by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+        interaction.guild.channels.cache.get(server.logs_channel).send(`👷 ${user} was warned by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+
+        interaction.member.send({
+            content: `👷 You have been warned${reason ? ` for **${reason}**` : ''} in ${interaction.guild.name} (${interaction.guild.id})`,
+        });
 
         return interaction.reply({
-            content: `❗ Warned ${user}${reason ? ` for ${reason}` : ''}`
+            content: `👷 Warned ${user}${reason ? ` for ${reason}` : ''}`
         });
     }
 }

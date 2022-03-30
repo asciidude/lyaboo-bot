@@ -40,7 +40,9 @@ export default {
 
         await member.ban(reason || 'No reason provided');
 
-        interaction.guild.channels.cache.get(server.logs_channel)?.send(`${user} was kicked by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+        if(server.logs_enabled) {
+            interaction.guild.channels.cache.get(server.logs_channel)?.send(`🦶 ${user} was banned by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+        }
 
         return interaction.reply({
             content: `🦶 Banned ${user}${reason ? ` for ${reason}` : ''}`

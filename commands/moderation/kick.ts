@@ -40,10 +40,12 @@ export default {
 
         await member.kick(reason || 'No reason provided');
 
-        interaction.guild.channels.cache.get(server.logs_channel)?.send(`${user} was kicked by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+        if(server.logs_enabled) {
+            interaction.guild.channels.cache.get(server.logs_channel)?.send(`🦶 ${user} was kicked by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
+        }
 
         return interaction.reply({
-            content: `🦶 Kicked ${user}${reason ? ` for ${reason}` : ''}`
+            content: ` Kicked ${user}${reason ? ` for ${reason}` : ''}`
         });
     }
 }

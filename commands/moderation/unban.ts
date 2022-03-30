@@ -22,7 +22,9 @@ export default {
 
         await interaction.guild.members.unban(id);
 
-        interaction.guild.channels.cache.get(server.logs_channel)?.send(`${id} was unbanned by ${interaction.member}`);
+        if(server.logs_enabled) {
+            interaction.guild.channels.cache.get(server.logs_channel)?.send(`🦶 ${id} was unbanned by ${interaction.member}`);
+        }
 
         return interaction.reply({
             content: `🦶 Unbanned user ${id}}`

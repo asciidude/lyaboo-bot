@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
+import Server from '../../models/Server';
 
 export default {
     data: new SlashCommandBuilder()
@@ -11,6 +12,8 @@ export default {
                     .setRequired(true)
                 ),
     execute: async (interaction) => {
+        const server = await Server.findOne({ server_id: interaction.guild.id });
+
         if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return interaction.reply({
             content: '⛔ You do not have permission to use this command (`MANAGE_MESSAGES`)',
             ephemeral: true
@@ -23,6 +26,10 @@ export default {
         });
 
         await interaction.channel.bulkDelete(amount);
+
+        if(server.logs_enabled) {
+            interaction.guild.channels.cache.get(server.logs_channel).send(`🗑 ${interaction.member} purged ${interaction.channel} (${amount} messages)`);
+        }
 
         await interaction.reply({
             content: `🗑 Deleted ${amount} messages`,
