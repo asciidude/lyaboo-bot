@@ -42,7 +42,7 @@ export default {
 
         interaction.guild.channels.cache.get(server.logs_channel).send(`👷 ${user} was warned by ${interaction.member}${reason ? ` for ${reason}` : ''}`);
 
-        interaction.member.send({
+        user.send({
             content: `👷 You have been warned${reason ? ` for **${reason}**` : ''} in ${interaction.guild.name} (${interaction.guild.id})`,
         });
 
